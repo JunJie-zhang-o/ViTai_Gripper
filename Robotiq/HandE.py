@@ -3,7 +3,7 @@
 '''
 Author       : Jay jay.zhangjunjie@outlook.com
 Date         : 2024-05-16 17:19:52
-LastEditTime : 2024-05-20 23:46:37
+LastEditTime : 2024-07-20 14:54:40
 LastEditors  : Jay jay.zhangjunjie@outlook.com
 Description  : 
 '''
@@ -182,7 +182,9 @@ class HandEForRtu:
         self.master.write_single_register(HandERegister.REQUEST_ACTION, self.__requestAction(), slave=self.DEFAULT_SLAVE_ID)
 
 
-    def emergencyAutoRelease(self):
+    def emergencyAutoRelease(self, releaseDirction:RARD=None):
+        if releaseDirction is not None:
+            self.__rArd = releaseDirction
         self.__rAtr = RATR.EAutoRelease
         self.master.write_single_register(HandERegister.REQUEST_ACTION, self.__requestAction(), slave=self.DEFAULT_SLAVE_ID)
 
