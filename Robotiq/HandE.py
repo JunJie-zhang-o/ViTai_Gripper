@@ -120,7 +120,7 @@ class HandEForRtu:
     POS_CONVERSION_RATIO = 0.1953125    # 50mm / 256
 
 
-    def __init__(self, port) -> None:
+    def __init__(self, port, autoInit: bool=True) -> None:
         
         self.master = ModbusRTU(port=port,
                                 baudrate=self.DEFAULT_BAUDRATE,
@@ -133,18 +133,21 @@ class HandEForRtu:
         self.__readGripperAction()
         self.readGripperStatus()
 
+        self.__rAct = self.__gAct
         # reset and activate, must be execute befor first move
-        self.initGripper()
+        if autoInit:
+            self.initGripper()
 
 
     def initGripper(self):
-        self.resetGripper()
-        self.activateGripper()
-        while True:
-            self.readGripperStatus()
-            if self.__gSta == GSTA.ActivationCompleted: 
-                break
-            time.sleep(DEFAULT_SYNC_TIME)
+        if self.__gAct != GACT.GripperActivation or self.__gSta != GSTA.ActivationCompleted:
+            self.resetGripper()
+            self.activateGripper()
+            while True:
+                self.readGripperStatus()
+                if self.__gSta == GSTA.ActivationCompleted: 
+                    break
+                time.sleep(DEFAULT_SYNC_TIME)
 
 
     def activateGripper(self):
