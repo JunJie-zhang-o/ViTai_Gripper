@@ -4,7 +4,12 @@ import time
 # from Robotiq.HandE import HandEForRtu
 from Robotiq import HandEForRtu
 
-port = "/dev/tty.usbserial-2120"
+# ! you need to change the port.
+# * In linux, you can ls /dev/ttyUSB* to found the usb port
+# * In Mac,  you can ls /dev/tty* to found the usb port
+# * In Win, you can find the com port.
+
+port = "/dev/tty.usbserial-AQ00O97B"
 hande = HandEForRtu(port=port)
 time.sleep(1)
 while True:
